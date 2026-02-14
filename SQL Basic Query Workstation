@@ -7,3 +7,11 @@ union
 Select p.firstName, p.lastName, a.city, a.state from Person p
 right join Address a
 ON p.personId = a.personId where firstName is not Null;
+
+
+--Q2. Employees Earning More Than Their Managers
+SELECT e.name as Employee
+FROM Employee e
+LEFT JOIN Employee m 
+    ON e.managerId = m.id
+where e.salary > m.salary;
