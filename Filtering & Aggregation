@@ -1,0 +1,56 @@
+--Q1. Customer Placing the Largest Number of Orders
+Easy
+select customer_number 
+from Orders
+Group BY customer_number 
+order by count(order_number) DESC 
+Limit 1;
+
+OR
+
+SELECT customer_number
+FROM Orders
+GROUP BY customer_number
+HAVING COUNT(*) = (
+    SELECT MAX(order_count)
+    FROM (
+        SELECT COUNT(*) AS order_count
+        FROM Orders
+        GROUP BY customer_number
+    ) AS counts
+);
+
+
+
+--Q2. Classes With at Least 5 Students
+Easy
+
+Select class from Courses 
+group by class
+having count(student) > 4;
+
+
+Q3. Monthly Transactions I
+Med.
+
+SELECT 
+    DATE_FORMAT(trans_date, '%Y-%m') AS month,                                        -- Extract month in YYYY-MM format
+    country,
+    COUNT(id) AS trans_count,                                                         -- Total transactions
+    SUM(CASE WHEN state = 'approved' THEN 1 ELSE 0 END) AS approved_count,            -- Approved transactions
+    SUM(amount) AS trans_total_amount,                                                -- Total amount
+    SUM(CASE WHEN state = 'approved' THEN amount ELSE 0 END) AS approved_total_amount -- Approved amount
+FROM 
+    Transactions
+GROUP BY 
+    month, country;
+
+
+Q4. User Activity for the Past 30 Days I
+Easy
+
+SELECT DISTINCT activity_date AS day, 
+       COUNT(DISTINCT user_id) AS active_users 
+FROM Activity 
+where activity_date between '2019-06-28'AND '2019-07-27'
+GROUP BY activity_date;
